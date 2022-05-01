@@ -71,7 +71,7 @@ resource "aws_instance" "ec2_bastion" {
   tags = merge(
     local.tags,
     {
-      name = "bastion_${local.name}"
+      Name = "bastion_${local.name}"
     },
   )
 }
@@ -89,7 +89,7 @@ resource "aws_instance" "ec2_amazon_linux" {
   tags = merge(
     local.tags,
     {
-      name = "AL_${local.name}"
+      Name = "AL_${local.name}"
     },
   )
 }
@@ -107,7 +107,7 @@ resource "aws_instance" "ec2_rhel8" {
   tags = merge(
     local.tags,
     {
-      name = "RHEL8_${local.name}"
+      Name = "RHEL8_${local.name}"
     },
   )
 }
@@ -125,7 +125,7 @@ resource "aws_instance" "ec2_server2019" {
   tags = merge(
     local.tags,
     {
-      name = "S2019_${local.name}"
+      Name = "S2019_${local.name}"
     },
   )
 }
