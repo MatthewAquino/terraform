@@ -42,7 +42,7 @@ module "security_group" {
   vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
-  ingress_rules       = ["https-443-tcp", "ssh-tcp", "rdp-tcp", "all-icmp"]
+  ingress_rules       = ["https-443-tcp", "ssh-tcp", "all-icmp"]
   ingress_with_source_security_group_id = [
     {
       from_port                = 0
@@ -112,10 +112,10 @@ resource "aws_instance" "ec2_rhel8" {
   )
 }
 
-resource "aws_instance" "ec2_server2019" {
+resource "aws_instance" "ec2_ubuntu18" {
 
   key_name               = "terraform_key"
-  ami                    = "ami-08ed5c5dd62794ec0"
+  ami                    = "ami-005de95e8ff495156"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
   subnet_id              = element(module.vpc.private_subnets, 0)
@@ -125,7 +125,7 @@ resource "aws_instance" "ec2_server2019" {
   tags = merge(
     local.tags,
     {
-      Name = "S2019_${local.name}"
+      Name = "ub18_${local.name}"
     },
   )
 }
