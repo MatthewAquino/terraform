@@ -15,7 +15,7 @@ data "http" "myip" {
   url = "http://ipv4.icanhazip.com"
 }
 
-## Lab VPC & SG 
+## Supporting Resources
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -53,19 +53,12 @@ module "security_group" {
   ]
   egress_rules = ["all-all"]
 
-
   tags = local.tags
-}
-
-resource "aws_network_interface" "this" {
-  subnet_id = element(module.vpc.private_subnets, 0)
 }
 
 ## EC2 Instances
 
-module "ec2_bastion" {
-  source   = "terraform-aws-modules/ec2-instance/aws"
-  name     = "bastion_${local.name}"
+resource "aws_instance" "ec2_bastion" {
   key_name = "terraform_key"
 
   ami                         = "ami-0f9fc25dd2506cf6d"
@@ -75,15 +68,17 @@ module "ec2_bastion" {
   vpc_security_group_ids      = [module.security_group.security_group_id]
   associate_public_ip_address = true
 
-  tags = local.tags
-
+  tags = merge(
+    local.tags,
+    {
+      name = "bastion_${local.name}"
+    },
+  )
 }
 
-module "ec2_amazon_linux" {
-  source   = "terraform-aws-modules/ec2-instance/aws"
-  name     = "amazonLinux_${local.name}"
-  key_name = "terraform_key"
+resource "aws_instance" "ec2_amazon_linux" {
 
+  key_name               = "terraform_key"
   ami                    = "ami-0f9fc25dd2506cf6d"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
@@ -91,31 +86,35 @@ module "ec2_amazon_linux" {
   vpc_security_group_ids = [module.security_group.security_group_id]
 
 
-  tags = local.tags
-
+  tags = merge(
+    local.tags,
+    {
+      name = "AL_${local.name}"
+    },
+  )
 }
 
 
-module "ec2_rhel8" {
-  source   = "terraform-aws-modules/ec2-instance/aws"
-  name     = "RHEL8_${local.name}"
-  key_name = "terraform_key"
+resource "aws_instance" "ec2_rhel8" {
 
+  key_name               = "terraform_key"
   ami                    = "ami-0b0af3577fe5e3532"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
   subnet_id              = element(module.vpc.private_subnets, 0)
   vpc_security_group_ids = [module.security_group.security_group_id]
 
-  tags = local.tags
-
+  tags = merge(
+    local.tags,
+    {
+      name = "RHEL8_${local.name}"
+    },
+  )
 }
 
-module "ec2_server2019" {
-  source   = "terraform-aws-modules/ec2-instance/aws"
-  name     = "S2019_${local.name}"
-  key_name = "terraform_key"
+resource "aws_instance" "ec2_server2019" {
 
+  key_name               = "terraform_key"
   ami                    = "ami-08ed5c5dd62794ec0"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
@@ -123,6 +122,10 @@ module "ec2_server2019" {
   vpc_security_group_ids = [module.security_group.security_group_id]
 
 
-  tags = local.tags
-
+  tags = merge(
+    local.tags,
+    {
+      name = "S2019_${local.name}"
+    },
+  )
 }
