@@ -43,10 +43,10 @@ module "security_group" {
 
   ingress_cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
   ingress_rules       = ["https-443-tcp", "ssh-tcp", "rdp-tcp", "all-icmp"]
-  ingress_with_cidr_blocks = [
+  ingress_with_source_security_group_id = [
     {
-      from_port                = -1
-      to_port                  = -1
+      from_port                = 0
+      to_port                  = 0
       protocol                 = "-1"
       source_security_group_id = module.security_group.security_group_id
     },
