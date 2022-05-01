@@ -61,6 +61,8 @@ resource "aws_network_interface" "this" {
   subnet_id = element(module.vpc.private_subnets, 0)
 }
 
+## EC2 Instances
+
 module "ec2_bastion" {
   source   = "terraform-aws-modules/ec2-instance/aws"
   name     = "bastion_${local.name}"
