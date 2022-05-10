@@ -82,7 +82,7 @@ resource "aws_instance" "ec2_amazon_linux" {
   ami                    = "ami-0f9fc25dd2506cf6d"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
-  subnet_id              = element(module.vpc.private_subnets, 0)
+  subnet_id              = element(module.vpc.private_subnets,0)
   vpc_security_group_ids = [module.security_group.security_group_id]
 
 
@@ -101,7 +101,7 @@ resource "aws_instance" "ec2_rhel8" {
   ami                    = "ami-0b0af3577fe5e3532"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
-  subnet_id              = element(module.vpc.private_subnets, 0)
+  subnet_id              = element(module.vpc.private_subnets, 1)
   vpc_security_group_ids = [module.security_group.security_group_id]
 
   tags = merge(
@@ -118,7 +118,7 @@ resource "aws_instance" "ec2_ubuntu18" {
   ami                    = "ami-005de95e8ff495156"
   instance_type          = "t2.micro"
   availability_zone      = element(module.vpc.azs, 0)
-  subnet_id              = element(module.vpc.private_subnets, 0)
+  subnet_id              = element(module.vpc.private_subnets, 2)
   vpc_security_group_ids = [module.security_group.security_group_id]
 
 
